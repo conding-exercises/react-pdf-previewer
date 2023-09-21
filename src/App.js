@@ -1,24 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+// src/App.js
+
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import FileTable from './components/FileTable';
+import PdfPreview from './components/PdfPreview';
 
 function App() {
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const files = [
+    { name: 'FRM', url: './assets/FRM.pdf' },
+    { name: 'File 2', url: '/assets/2023-06-15 Intro Front End.pdf' },
+    // Add more files as needed
+  ];
+
+  const handlePreviewClick = (file) => {
+    setSelectedFile(file);
+    // console.log('Preview button clicked for:', file);
+    console.log('handlePreviewClick -> the updated selectedFile:', {selectedFile});
+
+  };
+  
+  useEffect(() => {
+    console.log('useEffect -> the updated selectedFile:', selectedFile);
+  }, [selectedFile]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route exact path="/" element={<FileTable
+            files={files} onPreviewClick={handlePreviewClick} onDownloadClick={(file) => {
+              // Implement download logic here
+
+            }}
+          />}>
+        </Route>
+
+        <Route path="/preview" element={selectedFile? <PdfPreview file={selectedFile}/> : null}>
+        </Route>
+      </Routes>
+    </Router>
   );
 }
 

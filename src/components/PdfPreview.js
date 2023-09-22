@@ -3,9 +3,13 @@
 import React, { useEffect, useRef } from 'react';
 import pdfjs from 'pdfjs-dist';
 
+pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+
+
+
 function PdfPreview({ file }) {
   const canvasRef = useRef(null);
-  console.log('Preview component is triggered for:', file.name);
+  console.log('Preview component is triggered for:', file);
 
   useEffect(() => {
     const loadPdf = async () => {
